@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#8b6bd6">
+<title>خطوتي AI | خطط يومك بذكاء</title>
+<style>
+:root{--purple:#8b6bd6;--deep:#6746b5;--light:#f2edff;--pale:#faf8ff;--ink:#302747;--muted:#827a91;--line:#eee8f8;--green:#48a987}
+*{box-sizing:border-box}body{margin:0;background:#f8f6fc;color:var(--ink);font-family:Tahoma,Arial,sans-serif}
+button,input,textarea,select{font:inherit}button{cursor:pointer}
+.app{max-width:1180px;margin:auto;padding:20px}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:22px}
+.brand{display:flex;align-items:center;gap:12px}.logo{width:48px;height:48px;border-radius:16px;background:linear-gradient(135deg,#bba4f4,#8060ca);display:grid;place-items:center;color:white;font-size:25px;box-shadow:0 7px 18px #9a7bd344}
+.brand h1{font-size:22px;margin:0}.brand p{font-size:12px;color:var(--muted);margin:4px 0 0}
+.today{background:white;border:1px solid var(--line);padding:10px 14px;border-radius:14px;color:var(--muted);font-size:13px}
+.hero{background:linear-gradient(115deg,#7654c4,#a88de8);color:white;border-radius:24px;padding:25px 28px;display:flex;justify-content:space-between;align-items:center;gap:15px;box-shadow:0 12px 28px #8667ca26}
+.hero h2{margin:0 0 9px;font-size:24px}.hero p{margin:0;color:#f0eaff;font-size:14px;line-height:1.8}.hero-mark{font-size:55px;opacity:.9}
+.layout{display:grid;grid-template-columns:220px 1fr;gap:20px;margin-top:20px}
+nav,.panel,.stat{background:white;border:1px solid var(--line);border-radius:20px}
+nav{padding:12px;height:max-content;position:sticky;top:12px}
+.nav-btn{width:100%;border:0;background:transparent;text-align:right;padding:13px 14px;border-radius:12px;color:#6e657f;margin:3px 0}
+.nav-btn.active,.nav-btn:hover{background:var(--light);color:var(--deep);font-weight:bold}
+.nav-btn span{margin-left:9px}
+main{min-width:0}.section{display:none}.section.active{display:block}
+.section-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:4px 0 15px}.section-title h2{font-size:20px;margin:0}.muted{color:var(--muted);font-size:13px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
+.stat{padding:17px}.stat .num{font-size:25px;font-weight:bold;color:var(--deep);margin:8px 0}.stat small{color:var(--muted)}
+.panel{padding:19px;margin-bottom:16px}.panel h3{margin:0 0 14px;font-size:16px}
+.progress{height:9px;background:#eee9f7;border-radius:20px;overflow:hidden;margin:12px 0}.progress>i{display:block;height:100%;background:linear-gradient(90deg,#a88de8,#7654c4);border-radius:20px;width:0}
+.task-form{display:flex;gap:8px;flex-wrap:wrap}.task-form input,.task-form select,.goal-form input,.chat-input textarea{border:1px solid var(--line);border-radius:12px;padding:12px;background:#fdfcff;outline:none;min-width:0}
+.task-form input{flex:1;min-width:140px}.task-form select{width:120px}
+.primary{background:var(--purple);color:white;border:0;border-radius:12px;padding:11px 17px}.primary:hover{background:var(--deep)}
+.task-list{display:grid;gap:9px}.task{display:flex;align-items:center;gap:10px;padding:12px;border:1px solid var(--line);border-radius:13px;background:#fff}
+.task input{accent-color:var(--purple);width:18px;height:18px}.task .task-name{flex:1}.task.done .task-name{text-decoration:line-through;color:#aaa}.tag{font-size:11px;background:var(--light);color:var(--deep);padding:5px 8px;border-radius:20px}
+.delete{border:0;background:#fff0f0;color:#c66;border-radius:9px;padding:6px 9px}
+.week{display:grid;grid-template-columns:repeat(7,1fr);gap:7px}.day{background:#faf8ff;border:1px solid var(--line);border-radius:12px;padding:13px 5px;text-align:center;min-height:75px}.day b{display:block;font-size:13px}.day small{display:block;color:var(--muted);margin-top:8px}
+.goal-form{display:flex;gap:8px}.goal-form input{flex:1}.goal{padding:12px;border:1px solid var(--line);border-radius:12px;margin-top:9px;display:flex;justify-content:space-between;gap:10px}
+.chatbox{height:320px;overflow:auto;background:#faf8ff;border:1px solid var(--line);border-radius:14px;padding:13px;display:flex;flex-direction:column;gap:10px}
+.msg{max-width:85%;padding:11px 13px;border-radius:14px;line-height:1.7;font-size:13px}.bot{background:white;border:1px solid var(--line);align-self:flex-start}.user{background:#e9e0ff;align-self:flex-end}
+.chat-input{display:flex;gap:8px;margin-top:10px}.chat-input textarea{flex:1;resize:vertical;min-height:44px}
+.empty{color:#aaa;text-align:center;padding:22px;font-size:13px}
+footer{text-align:center;color:#aaa;font-size:11px;padding:20px}
+@media(max-width:760px){.app{padding:13px}.layout{grid-template-columns:1fr}.layout nav{position:static;display:flex;overflow:auto;gap:4px;padding:8px}.nav-btn{white-space:nowrap;width:auto;padding:10px}.nav-btn span{margin-left:5px}.hero{padding:20px}.hero h2{font-size:20px}.hero-mark{font-size:40px}.stats{gap:8px}.stat{padding:12px}.stat .num{font-size:21px}.today{display:none}}
+@media(max-width:430px){.week{grid-template-columns:repeat(4,1fr)}.task-form select{flex:1}.task-form button{width:100%}.stats{grid-template-columns:repeat(3,1fr)}.stat small{font-size:10px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+ <div class="brand"><div class="logo">✦</div><div><h1>خطوتي AI</h1><p>خطّط بذكاء، وأنجز بثقة</p></div></div>
+ <div class="today" id="dateText"></div>
+</header>
+<section class="hero">
+ <div><h2>كل إنجاز كبير يبدأ بخطوة ✨</h2><p>رتّب أولوياتك، نظّم وقتك، وتابع تقدمك في مكان واحد.<br>ابدأ بخطوة صغيرة اليوم.</p></div>
+ <div class="hero-mark">✧</div>
+</section>
+<div class="layout">
+<nav>
+ <button class="nav-btn active" data-tab="home"><span>⌂</span> الرئيسية</button>
+ <button class="nav-btn" data-tab="daily"><span>☑</span> مهامي اليومية</button>
+ <button class="nav-btn" data-tab="weekly"><span>▦</span> التخطيط الأسبوعي</button>
+ <button class="nav-btn" data-tab="goals"><span>◎</span> أهدافي</button>
+ <button class="nav-btn" data-tab="assistant"><span>✦</span> المساعد الذكي</button>
+</nav>
+<main>
+<section class="section active" id="home">
+ <div class="section-title"><h2>لوحة التحكم</h2><span class="muted">نظرة سريعة على تقدمك</span></div>
+ <div class="stats">
+  <div class="stat"><small>إجمالي المهام</small><div class="num" id="totalNum">0</div><small>كل المهام المسجلة</small></div>
+  <div class="stat"><small>المهام المكتملة</small><div class="num" id="doneNum">0</div><small>خطوات أنجزتها</small></div>
+  <div class="stat"><small>نسبة الإنجاز</small><div class="num" id="percentNum">0%</div><small>استمرّي بالتقدم</small></div>
+ </div>
+ <div class="panel"><h3>تقدمك اليوم</h3><div class="progress"><i id="progressBar"></i></div><div class="muted" id="progressText">ابدئي بإضافة مهامك لعرض تقدمك.</div></div>
+ <div class="panel"><h3>أضيفي مهمة بسرعة</h3><form class="task-form" id="quickForm"><input id="quickTask" placeholder="مثلاً: مراجعة درس الرياضيات" required><select id="quickPriority"><option value="عادية">عادية</option><option value="مهمة">مهمة</option><option value="عاجلة">عاجلة</option></select><button class="primary">إضافة المهمة</button></form></div>
+ <div class="panel"><h3>مهامك القادمة</h3><div id="homeTasks" class="task-list"></div></div>
+</section>
+<section class="section" id="daily">
+ <div class="section-title"><h2>مهامي اليومية</h2><span class="muted">قسّمي يومك إلى خطوات بسيطة</span></div>
+ <div class="panel"><form class="task-form" id="taskForm"><input id="taskInput" placeholder="اكتبي المهمة الجديدة..." required><select id="priority"><option value="عادية">عادية</option><option value="مهمة">مهمة</option><option value="عاجلة">عاجلة</option></select><button class="primary">+ إضافة</button></form></div>
+ <div class="panel"><h3>قائمة المهام</h3><div id="taskList" class="task-list"></div></div>
+</section>
+<section class="section" id="weekly">
+ <div class="section-title"><h2>التخطيط الأسبوعي</h2><span class="muted">نظّمي أسبوعك بتوازن</span></div>
+ <div class="panel"><h3>أيام الأسبوع</h3><div class="week" id="weekGrid"></div></div>
+ <div class="panel"><h3>اقتراح لتوزيع أسبوعك</h3><p class="muted" style="line-height:2">• حددي أهم 3 أولويات للأسبوع.<br>• وزّعي المذاكرة والمهام على أيام مختلفة.<br>• اتركي وقتًا للراحة والأنشطة.<br>• راجعي إنجازك في نهاية الأسبوع.</p></div>
+</section>
+<section class="section" id="goals">
+ <div class="section-title"><h2>أهدافي</h2><span class="muted">كل هدف يبدأ بقرار</span></div>
+ <div class="panel"><form class="goal-form" id="goalForm"><input id="goalInput" placeholder="اكتبي هدفك..." required><button class="primary">إضافة هدف</button></form><div id="goalList"></div></div>
+</section>
+<section class="section" id="assistant">
+ <div class="section-title"><h2>المساعد الذكي ✦</h2><span class="muted">مساعدك في ترتيب الأفكار</span></div>
+ <div class="panel"><div class="chatbox" id="chatbox"><div class="msg bot">أهلًا بك! أنا مساعد خطوتي. اكتبي هدفك أو مهامك، وسأساعدك في ترتيبها بخطة واضحة. 💜<br><small>هذه نسخة تجريبية بقواعد مساعدة محلية، وليست متصلة بعد بخدمة ذكاء اصطناعي خارجية.</small></div></div><form class="chat-input" id="chatForm"><textarea id="chatInput" placeholder="مثلاً: عندي اختبار بعد 5 أيام..." required></textarea><button class="primary">إرسال</button></form></div>
+ <div class="panel"><h3>جرّبي تسألينني</h3><p class="muted">كيف أنظم وقت المذاكرة؟ · ساعدني أبدأ يومي · كيف أقسم هدفًا كبيرًا؟</p></div>
+</section>
+</main>
+</div>
+<footer>خطوتي AI · خطوتك اليوم تصنع فرق الغد 💜</footer>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+let tasks=JSON.parse(localStorage.getItem('khatwati_tasks')||'[]');
+let goals=JSON.parse(localStorage.getItem('khatwati_goals')||'[]');
+const save=()=>{localStorage.setItem('khatwati_tasks',JSON.stringify(tasks));localStorage.setItem('khatwati_goals',JSON.stringify(goals));};
+$('dateText').textContent=new Intl.DateTimeFormat('ar-SA',{weekday:'long',year:'numeric',month:'long',day:'numeric'}).format(new Date());
+document.querySelectorAll('.nav-btn').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));btn.classList.add('active');$(btn.dataset.tab).classList.add('active');}));
+function taskHTML(t){return `<div class="task ${t.done?'done':''}"><input type="checkbox" ${t.done?'checked':''} aria-label="إكمال المهمة" onchange="toggleTask(${t.id})"><span class="task-name">${escapeHTML(t.name)}</span><span class="tag">${escapeHTML(t.priority)}</span><button class="delete" onclick="deleteTask(${t.id})" aria-label="حذف">×</button></div>`}
+function escapeHTML(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function renderTasks(){const list=$('taskList'),home=$('homeTasks');list.innerHTML=tasks.length?tasks.map(taskHTML).join(''):'<div class="empty">ما عندك مهام حتى الآن. أضيفي أول مهمة! ✨</div>';let pending=tasks.filter(t=>!t.done);home.innerHTML=pending.length?pending.slice(0,4).map(taskHTML).join(''):'<div class="empty">رائع! لا توجد مهام متبقية حاليًا.</div>';let done=tasks.filter(t=>t.done).length,pct=tasks.length?Math.round(done/tasks.length*100):0;$('totalNum').textContent=tasks.length;$('doneNum').textContent=done;$('percentNum').textContent=pct+'%';$('progressBar').style.width=pct+'%';$('progressText').textContent=tasks.length?`أنجزتِ ${done} من ${tasks.length} مهام.`:'ابدئي بإضافة مهامك لعرض تقدمك.';}
+function addTask(name,priority){tasks.unshift({id:Date.now()+Math.random(),name,priority,done:false});save();renderTasks();}
+function toggleTask(id){tasks=tasks.map(t=>t.id===id?{...t,done:!t.done}:t);save();renderTasks();}
+function deleteTask(id){tasks=tasks.filter(t=>t.id!==id);save();renderTasks();}
+$('taskForm').addEventListener('submit',e=>{e.preventDefault();addTask($('taskInput').value.trim(),$('priority').value);$('taskInput').value='';});
+$('quickForm').addEventListener('submit',e=>{e.preventDefault();addTask($('quickTask').value.trim(),$('quickPriority').value);$('quickTask').value='';});
+function renderGoals(){$('goalList').innerHTML=goals.length?goals.map((g,i)=>`<div class="goal"><span>${escapeHTML(g)}</span><button class="delete" onclick="deleteGoal(${i})">حذف</button></div>`).join(''):'<div class="empty">أضيفي هدفًا تتطلعين لتحقيقه.</div>'}
+$('goalForm').addEventListener('submit',e=>{e.preventDefault();goals.push($('goalInput').value.trim());$('goalInput').value='';save();renderGoals();});
+function deleteGoal(i){goals.splice(i,1);save();renderGoals();}
+const days=['الأحد','الإثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];$('weekGrid').innerHTML=days.map((d,i)=>`<div class="day"><b>${d}</b><small>${i===5||i===6?'راحة وتجديد':'حددي مهامك'}</small></div>`).join('');
+function reply(q){let s=q.toLowerCase();if(s.includes('اختبار')||s.includes('مذاكر')||s.includes('دراس'))return 'خلينا نقسم المذاكرة إلى خطوات: 1) اكتبي المواد والدروس. 2) ابدئي بالأصعب أو الأقرب موعدًا. 3) خصصي فترات قصيرة وبينها استراحة. 4) اتركي وقتًا للمراجعة. اكتبي لي عدد الأيام والمواد لأقترح جدولًا مناسبًا.';if(s.includes('يوم')||s.includes('وقت'))return 'ابدئي بتحديد 3 أولويات فقط لهذا اليوم، ثم رتبيها حسب الأهمية. ضعي المهام القصيرة بين المهام التي تحتاج تركيزًا، ولا تنسي وقت الراحة.';if(s.includes('هدف'))return 'حوّلي الهدف الكبير إلى خطوات صغيرة قابلة للتنفيذ. حددي أول خطوة، وموعدًا مناسبًا لها، ثم تابعي تقدمك كل أسبوع.';return 'فكرة جميلة! رتّبي ما تريدين إنجازه إلى: مهم وعاجل، مهم وغير عاجل، ويمكن تأجيله. ابدئي بمهمة واحدة واضحة، ثم أضيفي الباقي إلى جدولك. أخبريني بموعدك أو وقتك المتاح لأساعدك أكثر.'}
+$('chatForm').addEventListener('submit',e=>{e.preventDefault();let q=$('chatInput').value.trim();if(!q)return;let u=document.createElement('div');u.className='msg user';u.textContent=q;$('chatbox').appendChild(u);let b=document.createElement('div');b.className='msg bot';b.textContent=reply(q);$('chatbox').appendChild(b);$('chatInput').value='';$('chatbox').scrollTop=$('chatbox').scrollHeight;});
+renderTasks();renderGoals();
+</script>
+</body></html>
